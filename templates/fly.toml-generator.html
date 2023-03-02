@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>AppSigner fly.toml generator</h1>
+<form method="POST" enctype="multipart/form-data" action="/submit">
+    <label for="title" style="font-size: large;"><b>App Name</b></label><br>
+<input type="text" id="title" name="app_name" value="AppSigner-{% for random in rand %}{{ random }}{% endfor %}">
+<br>
+<label for="title" style="font-size: large;">App Name for fly.io app (must be unique)</label><hr><br><br>
+{% for i in range(0, len)%}
+    <label for="title" style="font-size: large;"><b>{{vars[i]}}</b></label><br><br>
+    {% if vars[i] == "SERVER_URL" %}
+    <input type="text" id="title" name="{{vars[i]}}" value="https://AppSigner-{% for random in rand %}{{ random }}{% endfor %}.fly.dev">
+    {% else %}
+    <input type="text" id="title" name="{{vars[i]}}" value="{{ placeholders[i] }}">
+    {% endif %}
+    <br>
+    <label for="title" style="font-size: large;">{{descriptions[i]}}</label>
+    <hr>
+{% endfor %}
+    <label for="title" style="font-size: large;"><b>Apple Development Certificate (.p12 file) see <a href="https://github.com/SignTools/SignTools/blob/master/INSTALL-SIMPLE.md#3-signing-profile" rel="nofollow"> Step 3 for more details</a></b> </label><br>
+    <input type="file" id="title" name="APPLE_DEV_CERT" formenctype="multipart/form-data">
+    <input type="hidden" name="FOLDER" value="{{ folder }}">
+    <hr><br><br>
+    <input type="submit" formenctype="multipart/form-data">
+</form>
+</body>
+
+</html>
