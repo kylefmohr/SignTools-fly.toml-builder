@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, flash, redirect, send_file
 import json, os, base64, time
+from threading import Thread
 
 app = Flask(__name__)
 
@@ -23,8 +24,13 @@ def entry():
 
 @app.route('/submit', methods=['POST'])
 def submit():
+    
+    def cleanup():
+        time.sleep(15)
+        os.system('rm -rf static/*')
 
     FOLDER = request.form.get('FOLDER')
+    os.mkdir('static')
     os.mkdir('static/' + FOLDER)
     cert_file = request.files.get('APPLE_DEV_CERT')
     cert_file.save('static/' + FOLDER + '/cert.p12')
@@ -100,9 +106,10 @@ processes = []
     restart_limit = 0
     timeout = "2s"
 """)
-
+    thread = Thread(target=cleanup)
+    thread.start()
     return send_file('static/' + FOLDER + '/fly.toml', as_attachment=True, download_name='fly.toml')
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=8080)
