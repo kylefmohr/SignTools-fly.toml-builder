@@ -52,7 +52,7 @@ on:
 
 env:
   PROJECT_ID: coastal-bloom-371506 # TODO: update Google Cloud project id
-  SERVICE: SignTools_fly.toml_builder # TODO: update Cloud Run service name
+  SERVICE: SignTools-fly.toml-builder # TODO: update Cloud Run service name
   REGION: us-central1 # TODO: update Cloud Run service region
 
 jobs:
